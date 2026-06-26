@@ -632,21 +632,11 @@ export default function Home() {
       <section id="about" className="py-16 md:py-24 px-4 bg-[#243447]/30">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-[#c9a962] text-sm font-medium mb-6"
-              >
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-[#c9a962] text-sm font-medium mb-6">
                 <Heart className="w-4 h-4" />
                 Who We Are
-              </motion.div>
+              </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6">
                 Muslim Youth{" "}
                 <span className="text-[#c9a962]">Greater Detroit</span>
@@ -661,55 +651,35 @@ export default function Home() {
                 empowering the next generation with purpose and belonging.
               </p>
               <div className="flex flex-wrap gap-2 md:gap-3">
-                {["Faith & Spirituality", "Community Service", "Youth Leadership", "Brotherhood & Sisterhood"].map((tag, i) => (
-                  <motion.span
+                {["Faith & Spirituality", "Community Service", "Youth Leadership", "Brotherhood & Sisterhood"].map((tag) => (
+                  <span
                     key={tag}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(201, 169, 98, 0.2)" }}
-                    className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-xs md:text-sm font-medium text-[#c9a962] cursor-default"
+                    className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-xs md:text-sm font-medium text-[#c9a962]"
                   >
                     {tag}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="relative"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-[#c9a962]/10 to-[#c9a962]/5 rounded-3xl blur-2xl"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 6, repeat: Infinity }}
-              />
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#c9a962]/10 to-[#c9a962]/5 rounded-3xl blur-2xl" />
               <div className="relative grid grid-cols-2 gap-4">
                 {[
-                  { icon: Users, delay: 0 },
-                  { icon: Heart, delay: 0.1 },
-                  { icon: Star, delay: 0.2 },
-                  { icon: BookOpen, delay: 0.3 },
+                  { icon: Users },
+                  { icon: Heart },
+                  { icon: Star },
+                  { icon: BookOpen },
                 ].map((item, i) => (
-                  <motion.div
+                  <div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: item.delay }}
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    className={`${i % 2 === 0 ? "mt-8" : ""} aspect-square rounded-2xl bg-gradient-to-br from-[#c9a962]/20 to-[#c9a962]/10 border border-[#c9a962]/20 flex items-center justify-center cursor-pointer`}
+                    className={`${i % 2 === 0 ? "mt-8" : ""} aspect-square rounded-2xl bg-gradient-to-br from-[#c9a962]/20 to-[#c9a962]/10 border border-[#c9a962]/20 flex items-center justify-center`}
                   >
                     <item.icon className="w-12 h-12 text-[#c9a962]/40" />
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
