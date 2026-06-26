@@ -8,8 +8,12 @@
 }
 
 :root {
-  --background: #020617;
+  --background: #1a2332;
   --foreground: #ffffff;
+  --gold: #c9a962;
+  --gold-light: #d4b978;
+  --navy: #1a2332;
+  --navy-light: #243447;
 }
 
 body {
@@ -23,20 +27,20 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #1a2332;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #c9a962;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #d4b978;
 }
 
 /* Selection color */
 ::selection {
-  background: rgba(16, 185, 129, 0.3);
+  background: rgba(201, 169, 98, 0.3);
   color: white;
 }
