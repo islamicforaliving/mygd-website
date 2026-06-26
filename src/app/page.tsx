@@ -361,6 +361,7 @@ function ContactForm() {
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll();
@@ -371,9 +372,16 @@ export default function Home() {
   });
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    
     const onScroll = () => setShowScrollTop(window.scrollY > 600);
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
   const scrollTo = (id: string) => {
@@ -477,14 +485,14 @@ export default function Home() {
       </motion.nav>
 
       {/* ── Hero ── */}
-      <section ref={heroRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-        <FloatingParticles />
+      <section ref={heroRef} className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center pt-16 pb-8 md:pb-0 overflow-hidden">
+        {!isMobile && <FloatingParticles />}
         
         {/* Animated background */}
         <div className="absolute inset-0 bg-[#1a2332]">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#243447] via-[#1a2332] to-[#1a2332]" />
           <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#c9a962]/5 rounded-full blur-3xl"
+            className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-[#c9a962]/5 rounded-full blur-3xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0.5, 0.3],
@@ -492,7 +500,7 @@ export default function Home() {
             transition={{ duration: 8, repeat: Infinity }}
           />
           <motion.div
-            className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#c9a962]/5 rounded-full blur-3xl"
+            className="absolute bottom-1/4 right-1/4 w-64 h-64 md:w-96 md:h-96 bg-[#c9a962]/5 rounded-full blur-3xl"
             animate={{
               scale: [1.2, 1, 1.2],
               opacity: [0.5, 0.3, 0.5],
@@ -501,7 +509,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 text-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -511,21 +519,21 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-[#c9a962] text-sm font-medium mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-[#c9a962] text-xs md:text-sm font-medium mb-6 md:mb-8"
             >
-              <Navigation className="w-4 h-4" />
+              <Navigation className="w-3 h-3 md:w-4 md:h-4" />
               Rochester Hills, Michigan
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight"
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 md:mb-6 tracking-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
             >
               <motion.span
                 className="block text-white"
-                initial={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
               >
@@ -533,7 +541,7 @@ export default function Home() {
               </motion.span>
               <motion.span
                 className="block text-[#c9a962]"
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
@@ -542,7 +550,7 @@ export default function Home() {
             </motion.h1>
 
             <motion.p
-              className="text-xl md:text-2xl text-[#c9a962] max-w-3xl mx-auto mb-4 font-semibold"
+              className="text-lg sm:text-xl md:text-2xl text-[#c9a962] max-w-3xl mx-auto mb-3 md:mb-4 font-semibold px-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
@@ -550,7 +558,7 @@ export default function Home() {
               Sowing the Seeds of Tomorrow
             </motion.p>
             <motion.p
-              className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed"
+              className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7 }}
@@ -559,7 +567,7 @@ export default function Home() {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 px-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
@@ -567,17 +575,17 @@ export default function Home() {
               <motion.a
                 href="#programs"
                 onClick={(e) => { e.preventDefault(); scrollTo("programs"); }}
-                className="flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#c9a962] to-[#d4b978] text-lg font-bold text-[#1a2332] shadow-lg shadow-[#c9a962]/25"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 md:px-8 md:py-4 rounded-full bg-gradient-to-r from-[#c9a962] to-[#d4b978] text-base md:text-lg font-bold text-[#1a2332] shadow-lg shadow-[#c9a962]/25"
                 whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(201, 169, 98, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
               >
                 Explore Programs
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
               </motion.a>
               <motion.a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); scrollTo("contact"); }}
-                className="flex items-center gap-2 px-8 py-4 rounded-full bg-transparent border-2 border-[#c9a962]/30 text-lg font-bold text-white"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 md:px-8 md:py-4 rounded-full bg-transparent border-2 border-[#c9a962]/30 text-base md:text-lg font-bold text-white"
                 whileHover={{ scale: 1.05, backgroundColor: "rgba(201, 169, 98, 0.1)" }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -591,7 +599,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
+            className="mt-12 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl mx-auto px-4"
           >
             {stats.map((stat, i) => (
               <motion.div
@@ -601,10 +609,10 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2 + i * 0.1, type: "spring" }}
               >
-                <div className="text-3xl md:text-4xl font-black text-[#c9a962]">
+                <div className="text-2xl md:text-3xl lg:text-4xl font-black text-[#c9a962]">
                   <CountUp target={stat.number} />
                 </div>
-                <div className="text-sm text-slate-500 mt-1">{stat.label}</div>
+                <div className="text-xs md:text-sm text-slate-500 mt-1">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -614,16 +622,16 @@ export default function Home() {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-4 md:bottom-8 left-1/2 -translate-x-1/2"
         >
-          <ChevronDown className="w-6 h-6 text-[#c9a962]/50" />
+          <ChevronDown className="w-5 h-5 md:w-6 md:h-6 text-[#c9a962]/50" />
         </motion.div>
       </section>
 
       {/* ── About ── */}
-      <section id="about" className="py-24 px-4 bg-[#243447]/30">
+      <section id="about" className="py-16 md:py-24 px-4 bg-[#243447]/30">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -639,20 +647,20 @@ export default function Home() {
                 <Heart className="w-4 h-4" />
                 Who We Are
               </motion.div>
-              <h2 className="text-4xl md:text-5xl font-black mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6">
                 Muslim Youth{" "}
                 <span className="text-[#c9a962]">Greater Detroit</span>
               </h2>
-              <p className="text-lg text-slate-400 mb-6 leading-relaxed">
+              <p className="text-base md:text-lg text-slate-400 mb-4 md:mb-6 leading-relaxed">
                 MYGD is a vibrant community of young Muslims rooted at the Islamic Association of Greater Detroit. 
                 We create spaces where youth can grow in faith, build lasting friendships, and develop leadership 
                 skills that shape their futures.
               </p>
-              <p className="text-lg text-slate-400 mb-8 leading-relaxed">
+              <p className="text-base md:text-lg text-slate-400 mb-6 md:mb-8 leading-relaxed">
                 From qiyams and bonfires to educational programs and community service, we're committed to 
                 empowering the next generation with purpose and belonging.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 {["Faith & Spirituality", "Community Service", "Youth Leadership", "Brotherhood & Sisterhood"].map((tag, i) => (
                   <motion.span
                     key={tag}
@@ -661,7 +669,7 @@ export default function Home() {
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                     whileHover={{ scale: 1.05, backgroundColor: "rgba(201, 169, 98, 0.2)" }}
-                    className="px-4 py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-sm font-medium text-[#c9a962] cursor-default"
+                    className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-[#c9a962]/10 border border-[#c9a962]/20 text-xs md:text-sm font-medium text-[#c9a962] cursor-default"
                   >
                     {tag}
                   </motion.span>
@@ -707,13 +715,13 @@ export default function Home() {
       </section>
 
       {/* ── Programs ── */}
-      <section id="programs" className="py-24 px-4">
+      <section id="programs" className="py-16 md:py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -724,10 +732,10 @@ export default function Home() {
               <Sparkles className="w-4 h-4" />
               What We Offer
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
               Our <span className="text-[#c9a962]">Programs</span>
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto px-4">
               Whether you want to deepen your faith, make friends, or give back — we've got something for everyone.
             </p>
           </motion.div>
@@ -741,21 +749,21 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, type: "spring" }}
                 whileHover={{ 
-                  scale: 1.03, 
-                  y: -5,
+                  scale: isMobile ? 1 : 1.03, 
+                  y: isMobile ? 0 : -5,
                   transition: { type: "spring", stiffness: 300 }
                 }}
-                className="group relative p-8 rounded-2xl bg-[#243447]/30 border border-[#c9a962]/10 hover:border-[#c9a962]/30 transition-all cursor-pointer"
+                className="group relative p-6 md:p-8 rounded-2xl bg-[#243447]/30 border border-[#c9a962]/10 hover:border-[#c9a962]/30 transition-all cursor-pointer"
               >
                 <motion.div 
-                  className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex items-center justify-center mb-6"
-                  whileHover={{ rotate: 5, scale: 1.1 }}
+                  className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex items-center justify-center mb-4 md:mb-6"
+                  whileHover={{ rotate: isMobile ? 0 : 5, scale: isMobile ? 1 : 1.1 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <program.icon className="w-7 h-7 text-[#1a2332]" />
+                  <program.icon className="w-6 h-6 md:w-7 md:h-7 text-[#1a2332]" />
                 </motion.div>
-                <h3 className="text-xl font-bold mb-3 text-white group-hover:text-[#c9a962] transition-colors">{program.title}</h3>
-                <p className="text-slate-400 leading-relaxed">{program.description}</p>
+                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-white group-hover:text-[#c9a962] transition-colors">{program.title}</h3>
+                <p className="text-sm md:text-base text-slate-400 leading-relaxed">{program.description}</p>
                 <motion.div
                   className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity"
                   initial={{ x: -10 }}
@@ -770,13 +778,13 @@ export default function Home() {
       </section>
 
       {/* ── Events ── */}
-      <section id="events" className="py-24 px-4 bg-[#243447]/30">
+      <section id="events" className="py-16 md:py-24 px-4 bg-[#243447]/30">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -787,44 +795,44 @@ export default function Home() {
               <Calendar className="w-4 h-4" />
               Coming Up
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
               Upcoming <span className="text-[#c9a962]">Events</span>
             </h2>
-            <p className="text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto px-4">
               Mark your calendar. These events fill up fast!
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             {upcomingEvents.map((event, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                initial={{ opacity: 0, x: isMobile ? 0 : (i % 2 === 0 ? -30 : 30) }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02, y: -3 }}
-                className="group relative p-6 rounded-2xl bg-[#243447]/50 border border-[#c9a962]/10 hover:border-[#c9a962]/30 transition-all cursor-pointer"
+                whileHover={{ scale: isMobile ? 1 : 1.02, y: isMobile ? 0 : -3 }}
+                className="group relative p-4 md:p-6 rounded-2xl bg-[#243447]/50 border border-[#c9a962]/10 hover:border-[#c9a962]/30 transition-all cursor-pointer"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-3 md:gap-4">
                   <motion.div 
-                    className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex flex-col items-center justify-center text-[#1a2332] font-bold shrink-0"
-                    whileHover={{ rotate: 5 }}
+                    className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex flex-col items-center justify-center text-[#1a2332] font-bold shrink-0"
+                    whileHover={{ rotate: isMobile ? 0 : 5 }}
                   >
-                    <span className="text-xs uppercase">{event.date.split(" ")[0]}</span>
-                    <span className="text-lg">{event.date.split(" ")[1].replace(",", "")}</span>
+                    <span className="text-[10px] md:text-xs uppercase">{event.date.split(" ")[0]}</span>
+                    <span className="text-base md:text-lg">{event.date.split(" ")[1].replace(",", "")}</span>
                   </motion.div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#c9a962]/20 text-[#c9a962]">
+                      <span className="text-[10px] md:text-xs font-medium px-2 py-1 rounded-full bg-[#c9a962]/20 text-[#c9a962]">
                         {event.category}
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold mb-2 group-hover:text-[#c9a962] transition-colors">
+                    <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2 group-hover:text-[#c9a962] transition-colors">
                       {event.title}
                     </h3>
-                    <p className="text-slate-400 text-sm mb-3">{event.description}</p>
-                    <div className="flex flex-wrap gap-3 text-xs text-slate-500">
+                    <p className="text-slate-400 text-xs md:text-sm mb-2 md:mb-3">{event.description}</p>
+                    <div className="flex flex-wrap gap-2 md:gap-3 text-[10px] md:text-xs text-slate-500">
                       <span className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {event.time}
@@ -859,13 +867,13 @@ export default function Home() {
       </section>
 
       {/* ── Impact ── */}
-      <section id="impact" className="py-24 px-4">
+      <section id="impact" className="py-16 md:py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
@@ -876,12 +884,12 @@ export default function Home() {
               <Star className="w-4 h-4" />
               Real Stories
             </motion.div>
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
               What Our Youth <span className="text-[#c9a962]">Say</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
             {testimonials.map((t, i) => (
               <motion.div
                 key={i}
@@ -889,11 +897,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, type: "spring" }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className="p-8 rounded-2xl bg-[#243447]/50 border border-[#c9a962]/10 relative"
+                whileHover={{ y: isMobile ? 0 : -5, scale: isMobile ? 1 : 1.02 }}
+                className="p-6 md:p-8 rounded-2xl bg-[#243447]/50 border border-[#c9a962]/10 relative"
               >
                 <motion.div 
-                  className="absolute top-6 right-6 text-6xl text-[#c9a962]/10 font-serif"
+                  className="absolute top-4 right-4 md:top-6 md:right-6 text-4xl md:text-6xl text-[#c9a962]/10 font-serif"
                   initial={{ opacity: 0, rotate: -20 }}
                   whileInView={{ opacity: 1, rotate: 0 }}
                   viewport={{ once: true }}
@@ -901,17 +909,17 @@ export default function Home() {
                 >
                   &ldquo;
                 </motion.div>
-                <p className="text-slate-300 leading-relaxed mb-6 relative z-10">{t.text}</p>
+                <p className="text-sm md:text-base text-slate-300 leading-relaxed mb-4 md:mb-6 relative z-10">{t.text}</p>
                 <div className="flex items-center gap-3">
                   <motion.div 
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex items-center justify-center text-sm font-bold text-[#1a2332]"
-                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex items-center justify-center text-xs md:text-sm font-bold text-[#1a2332]"
+                    whileHover={{ scale: isMobile ? 1 : 1.2, rotate: isMobile ? 0 : 10 }}
                   >
                     {t.name[0]}
                   </motion.div>
                   <div>
-                    <div className="font-semibold text-white">{t.name}</div>
-                    <div className="text-sm text-slate-500">{t.age} years old · {t.program}</div>
+                    <div className="font-semibold text-white text-sm md:text-base">{t.name}</div>
+                    <div className="text-xs md:text-sm text-slate-500">{t.age} years old · {t.program}</div>
                   </div>
                 </div>
               </motion.div>
@@ -921,18 +929,18 @@ export default function Home() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-24 px-4 bg-[#243447]/30">
+      <section className="py-16 md:py-24 px-4 bg-[#243447]/30">
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-black mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black mb-4">
               Got <span className="text-[#c9a962]">Questions?</span>
             </h2>
-            <p className="text-lg text-slate-400">
+            <p className="text-base md:text-lg text-slate-400 px-4">
               Everything you need to know about joining MYGD.
             </p>
           </motion.div>
@@ -954,7 +962,7 @@ export default function Home() {
       </section>
 
       {/* ── Contact ── */}
-      <section id="contact" className="py-24 px-4 relative overflow-hidden">
+      <section id="contact" className="py-16 md:py-24 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#c9a962]/10 via-[#1a2332] to-[#c9a962]/5" />
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c9a962]/5 rounded-full blur-3xl"
@@ -978,10 +986,10 @@ export default function Home() {
               <Mail className="w-4 h-4" />
               Get In Touch
             </motion.div>
-            <h2 className="text-4xl md:text-6xl font-black mb-6">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6">
               Ready to <span className="text-[#c9a962]">Join?</span>
             </h2>
-            <p className="text-xl text-slate-400 mb-4 max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-slate-400 mb-4 max-w-2xl mx-auto px-4">
               Be part of something bigger. Join hundreds of Muslim youth who are growing in faith, 
               building friendships, and making a difference.
             </p>
@@ -991,7 +999,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-[#243447]/50 backdrop-blur-sm border border-[#c9a962]/10 rounded-2xl p-8 md:p-12"
+            className="bg-[#243447]/50 backdrop-blur-sm border border-[#c9a962]/10 rounded-2xl p-6 md:p-12"
           >
             <ContactForm />
           </motion.div>
@@ -1000,7 +1008,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-slate-500"
+            className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 md:gap-6 mt-8 md:mt-12 text-sm text-slate-500"
           >
             <motion.span className="flex items-center gap-2" whileHover={{ color: "#c9a962", scale: 1.05 }}>
               <MapPin className="w-4 h-4" />
